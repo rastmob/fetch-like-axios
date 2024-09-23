@@ -11,15 +11,15 @@ class ApiClient {
     }
 
 
-    request(endpoint, options = {}) {
+    async request(endpoint, options = {}) {
         let config = {
             method: options.method || 'GET',
-            headers: { ...this.defaultHeader, ...options.headers }
+            headers: { ...this.defaultHeaders, ...options.headers }
         };
         if (options.body) {
             config.body = JSON.stringify(options.body);
         }
-        const response = fetch(this.baseURL + endpoint, config);
+        const response = await fetch(this.baseURL + endpoint, config);
         return response;
     }
 
