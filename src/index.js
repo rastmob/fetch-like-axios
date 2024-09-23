@@ -1,29 +1,37 @@
+// src/index.js
+
 class ApiClient {
     constructor(baseURL) {
-        this.baseURL = baseURL || '';
-        this.defaultHeaders = {
-            'Content-Type': 'application/json'
-        };
+      this.baseURL = baseURL || '';
+      this.defaultHeaders = {
+        'Content-Type': 'application/json'
+      };
     }
-
+  
     setHeaders(headers) {
-        this.defaultHeaders = { ...this.defaultHeaders, ...headers };
+      this.defaultHeaders = { ...this.defaultHeaders, ...headers };
     }
-
-
+  
     async request(endpoint, options = {}) {
-        let config = {
-            method: options.method || 'GET',
-            headers: { ...this.defaultHeaders, ...options.headers }
-        };
-        if (options.body) {
-            config.body = JSON.stringify(options.body);
-        }
-        const response = await fetch(this.baseURL + endpoint, config);
-        return response;
+      let config = {
+        method: options.method || 'GET',
+        headers: { ...this.defaultHeaders, ...options.headers }
+      };
+  
+      if (options.body) {
+        config.body = JSON.stringify(options.body);
+      }
+  
+      const response = await fetch(this.baseURL + endpoint, config);
+  
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || 'Something went wrong');
+      }
+  
+      return response;
     }
-
-}
-
-module.exports = ApiClient;
-
+  }
+  
+  module.exports = ApiClient;
+  
