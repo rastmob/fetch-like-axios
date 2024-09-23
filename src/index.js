@@ -5,5 +5,9 @@ class ApiClient {
         'Content-Type': 'application/json'
       };
     }
+
 }
+
+module.exports = ApiClient;
+
   
