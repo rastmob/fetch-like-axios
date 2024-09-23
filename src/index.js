@@ -6,6 +6,10 @@ class ApiClient {
       };
     }
 
+    setHeaders(headers) {
+        this.defaultHeaders = { ...this.defaultHeaders, ...headers };
+      }
+
 }
 
 module.exports = ApiClient;
