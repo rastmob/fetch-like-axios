@@ -35,10 +35,12 @@ apiClient.setHeaders({
 });
 ```
 
-### Sending a GET request:
+### Sending a GET request with query parameters:
 
 ```javascript
-apiClient.get('/users')
+apiClient.get('/users', {
+  params: { name: 'Alp', age: 33 }
+})
   .then(data => {
     console.log('Fetched data:', data);
   })
@@ -50,7 +52,7 @@ apiClient.get('/users')
 ### Sending a POST request:
 
 ```javascript
-apiClient.post('/users', { name: 'Alp', age: 33 })
+apiClient.post('/users', { name: 'Rast Mobile', age: 33 })
   .then(data => {
     console.log('User created:', data);
   })
@@ -77,6 +79,18 @@ apiClient.put('/users/1', { name: 'Rast Mobile', age: 33 })
 apiClient.delete('/users/1')
   .then(data => {
     console.log('User deleted:', data);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
+### Using query parameters with a GET request:
+
+```javascript
+apiClient.get('/search', { params: { name: 'Alp', age: 33 } })
+  .then(data => {
+    console.log('Search results:', data);
   })
   .catch(err => {
     console.error('Error:', err.message);
