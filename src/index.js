@@ -1,5 +1,3 @@
-// src/index.js
-
 class ApiClient {
     constructor(baseURL) {
       this.baseURL = baseURL || '';
@@ -12,24 +10,42 @@ class ApiClient {
       this.defaultHeaders = { ...this.defaultHeaders, ...headers };
     }
   
-    async request(endpoint, options = {}) {
-      let config = {
-        method: options.method || 'GET',
-        headers: { ...this.defaultHeaders, ...options.headers }
+    buildQueryParams(params) {
+      const queryString = new URLSearchParams(params).toString();
+      return queryString ? `?${queryString}` : '';
+    }
+  
+    async request(endpoint, { method = 'GET', headers = {}, body, timeout = 5000, retries = 3, params = {} } = {}) {
+      const config = {
+        method,
+        headers: { ...this.defaultHeaders, ...headers },
       };
   
-      if (options.body) {
-        config.body = JSON.stringify(options.body);
+      if (body) {
+        config.body = JSON.stringify(body);
       }
   
-      const response = await fetch(this.baseURL + endpoint, config);
+      const query = this.buildQueryParams(params);
   
-      if (!response.ok) {
-        const errorData = await response.json();
-        throw new Error(errorData.message || 'Something went wrong');
+      const controller = new AbortController();
+      const id = setTimeout(() => controller.abort(), timeout);
+      config.signal = controller.signal;
+  
+      for (let i = 0; i < retries; i++) {
+        try {
+          const response = await fetch(this.baseURL + endpoint + query, config);
+          clearTimeout(id);
+  
+          if (!response.ok) {
+            const errorData = await response.json();
+            throw new Error(errorData.message || 'Something went wrong');
+          }
+  
+          return response.json();
+        } catch (error) {
+     
+        }
       }
-  
-      return response.json();
     }
   
     get(endpoint, options = {}) {
