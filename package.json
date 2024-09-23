@@ -1,0 +1,43 @@
+{
+  "name": "fetch-like-axios",
+  "version": "1.0.0",
+  "description": "A lightweight Axios-like wrapper for the native fetch API, tailored for Next.js",
+  "main": "src/index.js",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rastmob/fetch-like-axios"
+  },
+  "keywords": [
+    "nextjs",
+    "fetch",
+    "axios",
+    "wrapper",
+    "javascript",
+    "http-client"
+  ],
+  "author": "Rast Mobile Information Technologies",
+  "license": "MIT",
+  "bugs": {
+    "url": "https://github.com/rastmob/fetch-like-axios/issues"
+  },
+  "homepage": "https://www.rastmobile.com",
+  "contributors": [
+    {
+      "name": "Mehmet Alp",
+      "email": "mehmet.alp@rastmobile.com",
+      "url": "https://www.linkedin.com/company/rastmobile/"
+    }
+  ],
+  "funding": {
+    "type": "linkedin",
+    "url": "https://www.linkedin.com/company/rastmobile/"
+  },
+  "social": {
+    "linkedin": "https://www.linkedin.com/company/rastmobile/",
+    "behance": "https://www.behance.net/rastmobile",
+    "instagram": "https://instagram.com/mobilerast"
+  },
+  "engines": {
+    "node": ">=12.0.0"
+  }
+}
