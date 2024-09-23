@@ -11,7 +11,6 @@ class ApiClient {
     setHeaders(headers) {
       this.defaultHeaders = { ...this.defaultHeaders, ...headers };
     }
-  
     async request(endpoint, options = {}) {
       let config = {
         method: options.method || 'GET',
@@ -29,7 +28,7 @@ class ApiClient {
         throw new Error(errorData.message || 'Something went wrong');
       }
   
-      return response;
+      return response.json(); 
     }
   }
   
