@@ -49,40 +49,22 @@ apiClient.get('/users', {
   });
 ```
 
-### Sending a POST request:
+### Canceling a Request:
+
+You can cancel any ongoing request using the `cancelRequest` method:
 
 ```javascript
-apiClient.post('/users', { name: 'Rast Mobile', age: 33 })
+// Send a GET request with a cancelKey
+apiClient.get('/users', { cancelKey: 'getUsersRequest' })
   .then(data => {
-    console.log('User created:', data);
+    console.log('Fetched data:', data);
   })
   .catch(err => {
     console.error('Error:', err.message);
   });
-```
 
-### Sending a PUT request:
-
-```javascript
-apiClient.put('/users/1', { name: 'Rast Mobile', age: 33 })
-  .then(data => {
-    console.log('User updated:', data);
-  })
-  .catch(err => {
-    console.error('Error:', err.message);
-  });
-```
-
-### Sending a DELETE request:
-
-```javascript
-apiClient.delete('/users/1')
-  .then(data => {
-    console.log('User deleted:', data);
-  })
-  .catch(err => {
-    console.error('Error:', err.message);
-  });
+// Cancel the request using the cancelKey
+apiClient.cancelRequest('getUsersRequest');
 ```
 
 ### Timeout Handling:
@@ -130,4 +112,4 @@ apiClient.get('/users')
 
 ## License
 
-MIT
+MIT License
