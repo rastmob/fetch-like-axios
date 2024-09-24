@@ -4,7 +4,10 @@ class ApiClient {
       this.defaultHeaders = {
         'Content-Type': 'application/json'
       };
+      this.requestInterceptor = null;
+      this.responseInterceptor = null;
       this.errorHandler = null;
+      this.abortControllers = new Map(); 
     }
   
     setHeaders(headers) {
@@ -13,6 +16,16 @@ class ApiClient {
   
     setErrorHandler(handler) {
       this.errorHandler = handler;
+    }
+  
+   
+    setRequestInterceptor(interceptor) {
+      this.requestInterceptor = interceptor;
+    }
+  
+    
+    setResponseInterceptor(interceptor) {
+      this.responseInterceptor = interceptor;
     }
   
     buildQueryParams(params) {
@@ -27,8 +40,16 @@ class ApiClient {
       throw error;
     }
   
-    async request(endpoint, { method = 'GET', headers = {}, body, timeout = 5000, retries = 3, params = {} } = {}) {
-      const config = {
+    cancelRequest(key) {
+      if (this.abortControllers.has(key)) {
+        const controller = this.abortControllers.get(key);
+        controller.abort();
+        this.abortControllers.delete(key);
+      }
+    }
+  
+    async request(endpoint, { method = 'GET', headers = {}, body, timeout = 5000, retries = 3, params = {}, cancelKey = null } = {}) {
+      let config = {
         method,
         headers: { ...this.defaultHeaders, ...headers },
       };
@@ -43,6 +64,14 @@ class ApiClient {
       const id = setTimeout(() => controller.abort(), timeout);
       config.signal = controller.signal;
   
+      if (cancelKey) {
+        this.abortControllers.set(cancelKey, controller);
+      }
+  
+      if (this.requestInterceptor) {
+        config = this.requestInterceptor(config);
+      }
+  
       for (let i = 0; i < retries; i++) {
         try {
           const response = await fetch(this.baseURL + endpoint + query, config);
@@ -53,7 +82,17 @@ class ApiClient {
             throw new Error(errorData.message || 'Something went wrong');
           }
   
-          return response.json();
+          let responseData = await response.json();
+  
+          if (this.responseInterceptor) {
+            responseData = this.responseInterceptor(responseData);
+          }
+  
+          if (cancelKey) {
+            this.abortControllers.delete(cancelKey);
+          }
+  
+          return responseData;
         } catch (error) {
           if (i === retries - 1 || error.name === 'AbortError') {
             await this.handleError(error);
@@ -79,5 +118,4 @@ class ApiClient {
     }
   }
   
-  module.exports = ApiClient;
-  
+  module.exports = ApiClient;  
