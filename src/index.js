@@ -7,7 +7,7 @@ class ApiClient {
       this.requestInterceptor = null;
       this.responseInterceptor = null;
       this.errorHandler = null;
-      this.abortControllers = new Map(); 
+      this.abortControllers = new Map();
     }
   
     setHeaders(headers) {
@@ -18,12 +18,10 @@ class ApiClient {
       this.errorHandler = handler;
     }
   
-   
     setRequestInterceptor(interceptor) {
       this.requestInterceptor = interceptor;
     }
   
-    
     setResponseInterceptor(interceptor) {
       this.responseInterceptor = interceptor;
     }
@@ -116,6 +114,19 @@ class ApiClient {
     delete(endpoint, options = {}) {
       return this.request(endpoint, { ...options, method: 'DELETE' });
     }
+  
+    patch(endpoint, body, options = {}) {
+      return this.request(endpoint, { ...options, method: 'PATCH', body });
+    }
+  
+    head(endpoint, options = {}) {
+      return this.request(endpoint, { ...options, method: 'HEAD' });
+    }
+  
+    options(endpoint, options = {}) {
+      return this.request(endpoint, { ...options, method: 'OPTIONS' });
+    }
   }
   
-  module.exports = ApiClient;  
+  module.exports = ApiClient;
+  
