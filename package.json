@@ -1,6 +1,6 @@
 {
   "name": "fetch-axios-wrapper",
-  "version": "1.0.5",
+  "version": "1.0.6",
   "description": "A lightweight Axios-like wrapper for the native fetch API, tailored for Next.js",
   "main": "src/index.js",
   "repository": {

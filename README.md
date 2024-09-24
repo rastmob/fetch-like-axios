@@ -31,7 +31,7 @@ You can set default headers for all your requests, like authorization tokens:
 
 ```javascript
 apiClient.setHeaders({
-  Authorization: 'Bearer $token',
+  Authorization: 'Bearer my-token',
 });
 ```
 
@@ -85,18 +85,49 @@ apiClient.delete('/users/1')
   });
 ```
 
-### Using query parameters with a GET request:
+### Timeout Handling:
+
+You can specify how long to wait for the request to complete before it’s aborted:
 
 ```javascript
-apiClient.get('/search', { params: { name: 'Alp', age: 33 } })
+apiClient.get('/users', { timeout: 3000 }) // 3 seconds timeout
   .then(data => {
-    console.log('Search results:', data);
+    console.log('Fetched data:', data);
   })
   .catch(err => {
     console.error('Error:', err.message);
   });
 ```
 
+### Retry Mechanism:
+
+Retries the request a specified number of times if it fails:
+
+```javascript
+apiClient.get('/users', { retries: 3 }) // Retry 3 times
+  .then(data => {
+    console.log('Fetched data:', data);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
+### Error Handling:
+
+You can set a global error handler to handle errors in a custom way:
+
+```javascript
+apiClient.setErrorHandler((error) => {
+  console.error('Global error handler:', error.message);
+});
+
+apiClient.get('/users')
+  .catch(err => {
+    console.error('Caught error:', err.message);
+  });
+```
+
 ## License
 
-MIT License
+MIT
