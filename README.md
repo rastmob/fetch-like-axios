@@ -67,6 +67,64 @@ apiClient.get('/users', { cancelKey: 'getUsersRequest' })
 apiClient.cancelRequest('getUsersRequest');
 ```
 
+### Using Other HTTP Methods:
+
+You can use other HTTP methods like `PATCH`, `HEAD`, and `OPTIONS`:
+
+#### PATCH:
+
+```javascript
+apiClient.patch('/users/1', { name: 'Updated Name' })
+  .then(data => {
+    console.log('User updated:', data);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
+#### HEAD:
+
+```javascript
+apiClient.head('/users/1')
+  .then(headers => {
+    console.log('Fetched headers:', headers);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
+#### OPTIONS:
+
+```javascript
+apiClient.options('/users')
+  .then(data => {
+    console.log('Allowed methods:', data);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
+### Form-Data and File Upload:
+
+You can upload files and other form data using the `FormData` API:
+
+```javascript
+const formData = new FormData();
+formData.append('name', 'Alp');
+formData.append('file', fileInput.files[0]);
+
+apiClient.post('/upload', formData)
+  .then(data => {
+    console.log('Upload successful:', data);
+  })
+  .catch(err => {
+    console.error('Error:', err.message);
+  });
+```
+
 ### Timeout Handling:
 
 You can specify how long to wait for the request to complete before it’s aborted:
